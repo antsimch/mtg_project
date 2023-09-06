@@ -8,8 +8,8 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { HomeComponent } from './components/home/home.component';
 import { DeckListComponent } from './components/deck-list/deck-list.component';
-import { CreateUserComponent } from './components/create-user/create-user.component';
 import { MenuComponent } from './components/menu/menu.component';
+import { RegisterComponent } from './components/register/register.component';
 
 
 @NgModule({
@@ -18,8 +18,8 @@ import { MenuComponent } from './components/menu/menu.component';
     LoginComponent,
     HomeComponent,
     DeckListComponent,
-    CreateUserComponent,
-    MenuComponent
+    MenuComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,

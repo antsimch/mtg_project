@@ -10,6 +10,15 @@ export class DeckService {
 
   constructor(private http: HttpClient) { }
 
+  registerUser(form: FormGroup) {
+    const payload = {
+      username: form.get('username')?.value,
+      userEmail: form.get('email')?.value,
+      userPassword: form.get('password')?.value
+    }
+    return firstValueFrom(this.http.post<any>('/api/register', payload))
+  }
+
   login(form: FormGroup) {
     const payload = {
       username: form.get('username')?.value,

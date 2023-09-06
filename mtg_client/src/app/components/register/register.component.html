@@ -1,0 +1,46 @@
+<h2>Account Creation</h2>
+
+<div>
+    <form [formGroup]="registerForm" (ngSubmit)="registerUser()">
+        <table>
+            <tr>
+                <td>Username:</td>
+                <td>
+                    <input 
+                        type="text" 
+                        formControlName="username">
+                </td>
+            </tr>
+            <tr>
+                <td>Email:</td>
+                <td>
+                    <input 
+                        type="email" 
+                        formControlName="email">
+                </td>
+            </tr>
+            <tr>
+                <td>Password:</td>
+                <td>
+                    <input 
+                        type="password" 
+                        formControlName="password">
+                </td>
+            </tr>
+            <tr>
+                <td>Confirm password:</td>
+                <td>
+                    <input 
+                        type="password" 
+                        formControlName="passwordConfirmation">
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <button type="submit">Create Account</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>

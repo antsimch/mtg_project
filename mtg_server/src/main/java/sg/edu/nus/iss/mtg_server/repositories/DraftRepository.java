@@ -57,8 +57,8 @@ public class DraftRepository {
                 SQL_INSERT_USER,
                 user.getUserId(),
                 user.getUsername(),
-                user.getUserPassword(),
-                user.getEmail()) > 0;
+                user.getUserEmail(),
+                user.getUserPassword()) > 0;
     }
 
     public List<Deck> findDecksByUserId(String deckId) {

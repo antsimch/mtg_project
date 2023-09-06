@@ -39,7 +39,7 @@ public class MTGController {
     /*
      * Endpoint for creation of new user
      */
-    @PostMapping(path = "/new")
+    @PostMapping(path = "/register")
     public ResponseEntity<String> createUser(
             @RequestBody @Valid User loginDetails,
             BindingResult binding) {
