@@ -1,0 +1,58 @@
+<h2>Login</h2>
+
+<div>
+    <form [formGroup]="loginForm" (ngSubmit)="login()">
+        <table>
+            <tr>
+                <td>Username:</td>
+                <td>
+                    <input 
+                        type="text" 
+                        placeholder="Please enter your username" 
+                        formControlName="username">
+
+                <span 
+                    *ngIf="loginForm.get('username')?.hasError('required') 
+                            && loginForm.get('username')?.touched"
+                    style="color:red"
+                    >Please enter your name</span>
+
+                <span 
+                    *ngIf="error?.username" 
+                    style="color:red"
+                    >{{ error.username }}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>Password:</td>
+                <td>
+                    <input type="password"
+                        placeholder="Please enter your password"
+                        formControlName="password">
+
+                    <span 
+                        *ngIf="loginForm.get('password')?.hasError('required') 
+                                && loginForm.get('password')?.touched"
+                        style="color:red"
+                        >Please enter your name</span>
+
+                    <span 
+                        *ngIf="error?.password" 
+                        style="color:red"
+                        >{{ error.password }}</span>
+
+                    <span 
+                        *ngIf="error?.message" 
+                        style="color:red"
+                        >{{ error.message }}</span>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <button type="submit">Login</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>

@@ -15,10 +15,10 @@ public class LoginDetails {
     @NotNull
     @NotEmpty
     @NotBlank
-    private String userName;
+    private String username;
 
     @NotNull
     @NotEmpty
     @NotBlank
-    private String userPassword;
+    private String password;
 }

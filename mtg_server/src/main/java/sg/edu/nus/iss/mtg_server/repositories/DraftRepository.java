@@ -56,7 +56,7 @@ public class DraftRepository {
         return template.update(
                 SQL_INSERT_USER,
                 user.getUserId(),
-                user.getUserName(),
+                user.getUsername(),
                 user.getUserPassword(),
                 user.getEmail()) > 0;
     }

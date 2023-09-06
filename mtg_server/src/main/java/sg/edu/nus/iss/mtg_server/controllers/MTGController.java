@@ -97,12 +97,12 @@ public class MTGController {
 
         try {
             mtgSvc.authenticate(
-                    loginDetails.getUserName(),
-                    loginDetails.getUserPassword());
+                    loginDetails.getUsername(),
+                    loginDetails.getPassword());
 
             objbuilder.add(
                     "message",
-                    String.format("Welcome, %s\n", loginDetails.getUserName()));
+                    String.format("Welcome, %s\n", loginDetails.getUsername()));
 
             return ResponseEntity.ok(objbuilder.build().toString());
         } catch (InvalidUsernameOrPasswordException ex) {

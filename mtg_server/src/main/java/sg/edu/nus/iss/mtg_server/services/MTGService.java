@@ -29,7 +29,7 @@ public class MTGService {
     }
 
     public void insertUser(User user) throws UsernameAlreadyTakenException {
-        User result = draftRepo.findUser(user.getUserName());
+        User result = draftRepo.findUser(user.getUsername());
         
         if (result != null) 
             throw new UsernameAlreadyTakenException(
