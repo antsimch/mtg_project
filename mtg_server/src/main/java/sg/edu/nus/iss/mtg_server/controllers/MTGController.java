@@ -20,9 +20,13 @@ import sg.edu.nus.iss.mtg_server.exceptions.DeckNotFoundException;
 import sg.edu.nus.iss.mtg_server.exceptions.FailedToSaveDeckException;
 import sg.edu.nus.iss.mtg_server.exceptions.InvalidUsernameOrPasswordException;
 import sg.edu.nus.iss.mtg_server.exceptions.UsernameAlreadyTakenException;
+import sg.edu.nus.iss.mtg_server.models.Card;
 import sg.edu.nus.iss.mtg_server.models.Deck;
+import sg.edu.nus.iss.mtg_server.models.DeckDetails;
+import sg.edu.nus.iss.mtg_server.models.Draft;
 import sg.edu.nus.iss.mtg_server.models.LoginDetails;
 import sg.edu.nus.iss.mtg_server.models.User;
+import sg.edu.nus.iss.mtg_server.services.CardPoolService;
 import sg.edu.nus.iss.mtg_server.services.MTGService;
 
 @RestController
@@ -31,17 +35,22 @@ public class MTGController {
 
     private MTGService mtgSvc;
 
-    public MTGController(MTGService mtgSvc) {
+    private CardPoolService cardPoolSvc;
+
+    public MTGController(MTGService mtgSvc, CardPoolService cardPoolSvc) {
         this.mtgSvc = mtgSvc;
+        this.cardPoolSvc = cardPoolSvc;
     }
 
-    
     /*
-     * Endpoint for creation of new user
+     * Endpoint for creation of new user, includes validation of User object.
+     * Controller returns {"message": "User has been created"} upon successfully 
+     * inserting the user into database or {"message": "Username is already 
+     * taken"} if database already contains the same username
      */
     @PostMapping(path = "/register")
     public ResponseEntity<String> createUser(
-            @RequestBody @Valid User loginDetails,
+            @RequestBody @Valid User user,
             BindingResult binding) {
 
         JsonObjectBuilder objbuilder = Json.createObjectBuilder();
@@ -59,7 +68,7 @@ public class MTGController {
         }
 
         try {
-            mtgSvc.insertUser(loginDetails);
+            mtgSvc.insertUser(user);
             objbuilder.add("message", "User has been created.");
             return ResponseEntity.ok(objbuilder.build().toString());
         } catch (UsernameAlreadyTakenException ex) {
@@ -70,10 +79,13 @@ public class MTGController {
         }
     }
 
-
     /*
-     * Endpoint for login authentication
-     * TODO: include JWT
+     * Endpoint for login authentication includes validation of LoginDetails
+     * object. Controller returns {"message": "Welcome {username}", 
+     * "userId": {userId}} upon successful login or {"message": "Invalid 
+     * username and/or password"} if login is unsuccessful.
+     * 
+     * TODO: Hashing and JWT implementation
      */
     @PostMapping(path = "/login")
     public ResponseEntity<String> login(
@@ -96,13 +108,14 @@ public class MTGController {
         }
 
         try {
-            mtgSvc.authenticate(
+            String userId = mtgSvc.authenticate(
                     loginDetails.getUsername(),
                     loginDetails.getPassword());
 
             objbuilder.add(
                     "message",
-                    String.format("Welcome, %s\n", loginDetails.getUsername()));
+                    String.format("Welcome, %s\n", loginDetails.getUsername()))
+                    .add("userId", userId);
 
             return ResponseEntity.ok(objbuilder.build().toString());
         } catch (InvalidUsernameOrPasswordException ex) {
@@ -113,9 +126,12 @@ public class MTGController {
         }
     }
 
-
     /*
-     * Endpoint for saving a deck
+     * Endpoint for saving a deck, includes validation of Deck object.
+     * Controller returns {"message": "Your deck {deckName}(id: {deckId}) has 
+     * been successfully saved"} upon successfully inserting the deck into 
+     * database or {"message": "An error has occured when saving your deck"}
+     * if insertion is unsuccessful.
      */
     @PostMapping(path = "/save")
     public ResponseEntity<String> saveDeck(
@@ -157,9 +173,34 @@ public class MTGController {
         }
     }
 
+    /*
+     * Endpoint for retrieving list of decks by userId.
+     * Controller returns [...decks] upon successfully retrieving the list of 
+     * decks or 404 if no decks are found.
+     */
+    @GetMapping(path = "/decks/{userId}")
+    public ResponseEntity<String> getDecksByUserId(
+            @PathVariable String userId) {
+
+        List<DeckDetails> deckDetailsList = mtgSvc.findDecksByUserId(userId);
+
+        if (deckDetailsList.isEmpty())
+            return ResponseEntity.notFound().build();
+
+        JsonArrayBuilder deckDetailsArrBuilder = Json.createArrayBuilder();
+
+        deckDetailsList.stream()
+                .map(deckDetails -> deckDetails.toJsonObjectBuilder())
+                .forEach(objBuilder -> deckDetailsArrBuilder.add(objBuilder));
+
+        return ResponseEntity.ok(deckDetailsArrBuilder.build().toString());
+    }
 
     /*
      * Endpoint for retrieving a deck by deckId
+     * Controller returns { "deckId": , "deckName": , "userId": , "draftId:" , 
+     * "cards": []} upon successfully retrieving the deck from the database or
+     * 404 if the deck is not found.
      */
     @GetMapping(path = "/deck/{deckId}")
     public ResponseEntity<String> getDeckByDeckId(@PathVariable String deckId) {
@@ -175,47 +216,90 @@ public class MTGController {
         }
     }
 
-
     /*
-     * Endpoint for retrieving list of decks by userId
+     * Endpoint for getting list of drafts by userId
      */
-    @GetMapping(path = "/user/{userId}")
-    public ResponseEntity<String> getDecksByUserId(
+    @GetMapping(path = "/drafts/{userId}")
+    public ResponseEntity<String> getDraftsByUserId(
             @PathVariable String userId) {
+        
+        List<Draft> drafts = mtgSvc.findDraftsByUserId(userId);
 
-        List<Deck> decks = mtgSvc.findDecksByUserId(userId);
-
-        if (decks.isEmpty())
+        if (drafts.isEmpty())
             return ResponseEntity.notFound().build();
 
-        JsonArrayBuilder deckArrBuilder = Json.createArrayBuilder();
+        JsonArrayBuilder draftArrBuilder = Json.createArrayBuilder();
+        drafts.stream()
+                .map(draft -> draft.toJsonObjectBuilder())
+                .forEach(objBuilder -> draftArrBuilder.add(objBuilder));
 
-        decks.stream()
-                .map(deck -> deck.toJsonObjectBuilder())
-                .forEach(objBuilder -> deckArrBuilder.add(objBuilder));
-
-        return ResponseEntity.ok(deckArrBuilder.build().toString());
+        return ResponseEntity.ok(draftArrBuilder.build().toString());
     }
-
 
     /*
      * Endpoint for retrieving list of decks by draftId
      */
-    @GetMapping(path = "/draft/{draftId}") 
+    @GetMapping(path = "/draft/{draftId}")
     public ResponseEntity<String> getDecksByDraftId(
             @PathVariable String draftId) {
-        
-        List<Deck> decks = mtgSvc.findDecksByDraftId(draftId);
 
-        if (decks.isEmpty())
+        List<DeckDetails> deckDetailsList = mtgSvc.findDecksByDraftId(draftId);
+
+        if (deckDetailsList.isEmpty())
             return ResponseEntity.notFound().build();
 
-        JsonArrayBuilder deckArrBuilder = Json.createArrayBuilder();
+        JsonArrayBuilder deckDetailsArrBuilder = Json.createArrayBuilder();
 
-        decks.stream()
-                .map(deck -> deck.toJsonObjectBuilder())
-                .forEach(objBuilder -> deckArrBuilder.add(objBuilder));
+        deckDetailsList.stream()
+                .map(deckDetails -> deckDetails.toJsonObjectBuilder())
+                .forEach(objBuilder -> deckDetailsArrBuilder.add(objBuilder));
 
-        return ResponseEntity.ok(deckArrBuilder.build().toString());
+        return ResponseEntity.ok(deckDetailsArrBuilder.build().toString());
+    }
+
+    /*
+     * Endpoint for retrieving drafted cards from database
+     */
+    @GetMapping(path = "/pool/{userId}")
+    public ResponseEntity<String> getCardPoolByUserId(
+            @PathVariable String userId) {
+        
+        List<Card> cards = cardPoolSvc.findCardPoolByUserId(userId);
+        JsonObjectBuilder objBuilder = Json.createObjectBuilder();
+
+        if (cards.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        JsonArrayBuilder arrBuilder = Json.createArrayBuilder();
+        cards.stream()
+                .map(card -> card.toJsonObjectBuilder())
+                .forEach(jsonObj -> arrBuilder.add(jsonObj));
+
+        objBuilder.add("cards", arrBuilder);
+        return ResponseEntity.ok(objBuilder.build().toString());
+    }
+
+
+    /*
+     * Endpoint for saving drafted cards to database
+     */
+    @PostMapping(path = "/pool/{userId}")
+    public ResponseEntity<String> saveCardPool(
+            @RequestBody List<Card> cards, 
+            @PathVariable String userId) {
+
+        boolean insertSuccessful = cardPoolSvc.saveCardPool(cards, userId);
+        JsonObjectBuilder objBuilder = Json.createObjectBuilder();
+
+        if (!insertSuccessful){
+            objBuilder.add("message", "Error with caching card pool");
+            return ResponseEntity.internalServerError().body(
+                objBuilder.build().toString());
+        }
+
+        objBuilder.add("message", "Card pool cached successfully");
+
+        return ResponseEntity.ok().body(objBuilder.build().toString());
     }
 }

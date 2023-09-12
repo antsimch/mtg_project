@@ -1,1 +1,24 @@
-<p>deck-list works!</p>
+<h2>Deck List</h2>
+
+<table>
+    <thead>
+        <th>Deck Name:</th>
+        <th>Deck Colors:</th>
+        <th>Creation Date:</th>
+    </thead>
+    <tbody>
+        <tr *ngFor="let deckInfo of deckInfoList">
+            <td>
+                {{ deckInfo.name }}
+            </td>
+            <td>
+                <span *ngFor="let color of deckInfo.colors">
+                    <img [src]="color">
+                </span>
+            </td>
+            <td>
+                {{ deckInfo.creationDate }}
+            </td>
+        </tr>
+    </tbody>
+</table>

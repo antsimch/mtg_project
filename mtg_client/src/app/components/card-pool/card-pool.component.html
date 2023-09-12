@@ -1,0 +1,9 @@
+<h2>Card Pool</h2>
+
+<div>
+    <span *ngFor="let card of cardsInPool; let i = index">
+        <button (click)="addCardToDeck(i)">
+            <img [src]="card">
+        </button>
+    </span>
+</div>

@@ -29,16 +29,4 @@ public class DeckRepository {
         List<Document> docs = template.find(query, Document.class);
         return docs.isEmpty()? null: docs.get(0);
     }
-
-    public List<Document> findDecksByUserId(String userId) {
-        Query query = Query.query(Criteria.where("user_id").is(userId));
-        List<Document> docs = template.find(query, Document.class);
-        return docs.isEmpty()? null: docs;
-    }
-
-    public List<Document> findDecksByDraftId(String draftId) {
-        Query query = Query.query(Criteria.where("user_id").is(draftId));
-        List<Document> docs = template.find(query, Document.class);
-        return docs.isEmpty()? null: docs;
-    }
 }

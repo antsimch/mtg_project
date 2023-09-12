@@ -10,6 +10,11 @@ import { HomeComponent } from './components/home/home.component';
 import { DeckListComponent } from './components/deck-list/deck-list.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { RegisterComponent } from './components/register/register.component';
+import { HistoryComponent } from './components/history/history.component';
+import { RochesterComponent } from './components/rochester/rochester.component';
+import { DeckBuilderComponent } from './components/deck-builder/deck-builder.component';
+import { CardPoolComponent } from './components/card-pool/card-pool.component';
+import { DeckComponent } from './components/deck/deck.component';
 
 
 @NgModule({
@@ -19,7 +24,12 @@ import { RegisterComponent } from './components/register/register.component';
     HomeComponent,
     DeckListComponent,
     MenuComponent,
-    RegisterComponent
+    RegisterComponent,
+    HistoryComponent,
+    RochesterComponent,
+    DeckBuilderComponent,
+    CardPoolComponent,
+    DeckComponent
   ],
   imports: [
     BrowserModule,

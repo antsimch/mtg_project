@@ -33,7 +33,8 @@ export class LoginComponent implements OnInit {
     this.deckSvc.login(this.loginForm)
       .then(
         result => {
-          this.router.navigate(['/'])
+          const userId = result['userId']
+          this.router.navigate(['/', userId])
         }
       )
       .catch(

@@ -1,0 +1,13 @@
+<h2>Deck Builder</h2>
+
+<app-card-pool 
+    [cardsInPool]="cardsInPool" 
+    (cardToAddToDeck)="addCardToDeck($event)"
+    (indexToRemoveFromPool)="removeIndexFromPool($event)"
+    ></app-card-pool>
+    
+<app-deck 
+    [cardsInDeck]="cardsInDeck" 
+    (cardToRemoveFromDeck)="removeCardFromDeck($event)"
+    (indexToRemoveFromDeck)="removeIndexFromDeck($event)"
+    ></app-deck>

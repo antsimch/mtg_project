@@ -1,0 +1,9 @@
+<h2>Deck</h2>
+
+<div>
+    <tr *ngFor="let card of cardsInDeck; let i = index">
+        <button type="button" (click)="removeCardFromDeck(i)">
+            <img [src]="card.cardImageUrl">
+        </button>
+    </tr>
+</div>
