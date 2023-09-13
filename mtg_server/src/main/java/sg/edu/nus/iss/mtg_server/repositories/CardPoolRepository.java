@@ -1,5 +1,6 @@
 package sg.edu.nus.iss.mtg_server.repositories;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,22 +9,20 @@ import org.springframework.stereotype.Repository;
 
 import jakarta.json.Json;
 import jakarta.json.JsonArrayBuilder;
+import lombok.AllArgsConstructor;
 import sg.edu.nus.iss.mtg_server.models.Card;
 
 @Repository
+@AllArgsConstructor
 public class CardPoolRepository {
     
-    private RedisTemplate<String, String> template;
+    private final RedisTemplate<String, String> template;
 
-    public CardPoolRepository(RedisTemplate<String, String> template) {
-        this.template = template;
+    public Optional<String> findCardPoolByDraftId(String draftId) {
+        return Optional.ofNullable((template.opsForValue().get(draftId)));
     }
 
-    public Optional<String> findCardPoolByUserId(String userId) {
-        return Optional.ofNullable((template.opsForValue().get(userId)));
-    }
-
-    public void saveCardPool(List<Card> cardPool, String userId) {
+    public void saveCardPool(List<Card> cardPool, String draftId) {
 
         JsonArrayBuilder arrBuilder = Json.createArrayBuilder();
         cardPool.stream()
@@ -31,7 +30,8 @@ public class CardPoolRepository {
                 .forEach(jsonObj -> arrBuilder.add(jsonObj));
 
         template.opsForValue().set(
-                userId, 
-                arrBuilder.build().toString());
+                draftId, 
+                arrBuilder.build().toString(),
+                Duration.ofHours(1));
     } 
 }

@@ -63,4 +63,12 @@ export class DeckService {
     return firstValueFrom(
       this.http.post<any>(`/api/pool/${userId}`, JSON.stringify(cards)))
   }
+
+  getAllSets() {
+    return firstValueFrom(this.http.get<string[]>('/api/sets'))
+  }
+
+  getBoosterPack(set: string) {
+    return firstValueFrom(this.http.get<Card[]>(`/api/pack/${set}`))
+  }
 }

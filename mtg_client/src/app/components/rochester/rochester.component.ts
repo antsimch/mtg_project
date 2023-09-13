@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Card } from 'src/app/models';
+import { Card, Draft } from 'src/app/models';
 import { DeckService } from 'src/app/services/deck.service';
 
 @Component({
@@ -10,24 +10,28 @@ import { DeckService } from 'src/app/services/deck.service';
 })
 export class RochesterComponent {
 
-  draftedCards!: Card[]
+  @Input() draft!: Draft
+  @Output() draftedCardsEvent = new EventEmitter<Card>()
   
   constructor(
     private deckSvc: DeckService,
     private activatedRoute: ActivatedRoute) {}
 
-  draftCard(card: Card) {
-    this.draftedCards.push(card)
+  step = 0;
+
+  setStep(index: number) {
+    this.step = index;
   }
 
-  saveCardPool() {
-    const userId = this.activatedRoute.snapshot.params['userId']
-    this.deckSvc.saveCardPool(this.draftedCards, userId)
-      .then(
+  nextStep() {
+    this.step++;
+  }
 
-      )
-      .catch(
+  prevStep() {
+    this.step--;
+  }
 
-      )
+  draftCard(card: Card) {
+    this.draftedCardsEvent.emit(card)
   }
 }

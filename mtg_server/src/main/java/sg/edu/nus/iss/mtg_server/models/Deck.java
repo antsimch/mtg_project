@@ -7,7 +7,6 @@ import jakarta.json.JsonObjectBuilder;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -37,7 +36,6 @@ public class Deck {
     @NotNull
     @NotEmpty
     @NotBlank
-    @Size(min = 40, max = 60)
     private List<String> cards;
 
     public JsonObjectBuilder toJsonObjectBuilder() {

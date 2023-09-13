@@ -1,5 +1,9 @@
 <h2>Deck Builder</h2>
 
+<app-deck-builder-settings 
+    [randomCardPoolGenerated]="randomCardPoolGenerated"
+    (formEvent)="generateCardPool($event)"></app-deck-builder-settings>
+
 <app-card-pool 
     [cardsInPool]="cardsInPool" 
     (cardToAddToDeck)="addCardToDeck($event)"

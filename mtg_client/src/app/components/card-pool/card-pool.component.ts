@@ -12,6 +12,20 @@ export class CardPoolComponent {
   @Output() cardToAddToDeck = new EventEmitter<Card>()
   @Output() indexToRemoveFromPool = new EventEmitter<number>()
 
+  step = 0;
+
+  setStep(index: number) {
+    this.step = index;
+  }
+
+  nextStep() {
+    this.step++;
+  }
+
+  prevStep() {
+    this.step--;
+  }
+
   addCardToDeck(i: number) {
     const card = this.cardsInPool.at(i)
     this.cardToAddToDeck.emit(card)

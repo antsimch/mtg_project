@@ -8,16 +8,15 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
+import lombok.AllArgsConstructor;
+
 @Repository
+@AllArgsConstructor
 public class DeckRepository {
 
     private static final String C_NAME = "decks";
 
-    private MongoTemplate template;
-
-    public DeckRepository(MongoTemplate template) {
-        this.template = template;
-    }
+    private final MongoTemplate template;
 
     public String insertDeck(Document document) {
         Document newDoc = template.insert(document, C_NAME);
@@ -26,7 +25,9 @@ public class DeckRepository {
 
     public Document findDeckByDeckId(String deckId) {
         Query query = Query.query(Criteria.where("deck_id").is(deckId));
-        List<Document> docs = template.find(query, Document.class);
+        List<Document> docs = template.find(
+                query, Document.class, C_NAME);
+
         return docs.isEmpty()? null: docs.get(0);
     }
 }

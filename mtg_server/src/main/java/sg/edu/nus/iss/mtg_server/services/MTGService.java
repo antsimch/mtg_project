@@ -6,28 +6,29 @@ import java.util.UUID;
 import org.bson.Document;
 import org.springframework.stereotype.Service;
 
+import lombok.AllArgsConstructor;
+import sg.edu.nus.iss.mtg_server.exceptions.CardNotFoundException;
 import sg.edu.nus.iss.mtg_server.exceptions.DeckNotFoundException;
 import sg.edu.nus.iss.mtg_server.exceptions.FailedToSaveDeckException;
 import sg.edu.nus.iss.mtg_server.exceptions.InvalidUsernameOrPasswordException;
 import sg.edu.nus.iss.mtg_server.exceptions.UsernameAlreadyTakenException;
+import sg.edu.nus.iss.mtg_server.models.Card;
 import sg.edu.nus.iss.mtg_server.models.Deck;
 import sg.edu.nus.iss.mtg_server.models.DeckDetails;
-import sg.edu.nus.iss.mtg_server.models.Draft;
+import sg.edu.nus.iss.mtg_server.models.DraftDetails;
 import sg.edu.nus.iss.mtg_server.models.User;
 import sg.edu.nus.iss.mtg_server.models.Util;
+import sg.edu.nus.iss.mtg_server.repositories.CardRepository;
 import sg.edu.nus.iss.mtg_server.repositories.DeckRepository;
-import sg.edu.nus.iss.mtg_server.repositories.DraftRepository;
+import sg.edu.nus.iss.mtg_server.repositories.MTGRepository;
 
 @Service
+@AllArgsConstructor
 public class MTGService {
 
-    private DraftRepository draftRepo;
-    private DeckRepository deckRepo;
-
-    public MTGService(DraftRepository draftRepo, DeckRepository deckRepo) {
-        this.draftRepo = draftRepo;
-        this.deckRepo = deckRepo;
-    }
+    private final MTGRepository mtgRepo;
+    private final DeckRepository deckRepo;
+    private final CardRepository cardRepo;
 
     /*
      * Service for creation of new user, checks for duplicate username in
@@ -35,7 +36,7 @@ public class MTGService {
      * already contains the same username
      */
     public void insertUser(User user) throws UsernameAlreadyTakenException {
-        User result = draftRepo.findUser(user.getUsername());
+        User result = mtgRepo.findUser(user.getUsername());
 
         if (result != null)
             throw new UsernameAlreadyTakenException(
@@ -43,7 +44,7 @@ public class MTGService {
 
         user.setUserId(UUID.randomUUID().toString().substring(0, 16));
         System.out.println("\n\nuserId >>>> " + user.getUserId() + "\n\n");
-        draftRepo.insertUser(user);
+        mtgRepo.insertUser(user);
     }
 
     /*
@@ -53,12 +54,11 @@ public class MTGService {
     public String authenticate(
             String username,
             String password) throws InvalidUsernameOrPasswordException {
-        User result = draftRepo.findUser(username);
+        User result = mtgRepo.findUser(username);
 
-        if (result == null) {
+        if (result == null) 
             throw new InvalidUsernameOrPasswordException(
                     "Invalid username and/or password");
-        }
 
         return result.getUserId();
     }
@@ -81,15 +81,33 @@ public class MTGService {
         return Util.parseDocumentToDeck(doc);
     }
 
-    public List<DeckDetails> findDecksByUserId(String userId) {
-        return draftRepo.findDecksByUserId(userId);
+    // public List<DeckDetails> findDeckDetailsListByUserId(String userId) {
+    //     return mtgRepo.findDeckDetailsListByUserId(userId);
+    // }
+
+    // public List<DraftDetails> findDraftDetailsListByUserId(String userId) {
+    //     return mtgRepo.findDraftDetailsListByUserId(userId);
+    // }
+
+    public List<DraftDetails> findAllDraftDetails() {
+        return mtgRepo.findAllDraftDetails();
     }
 
-    public List<Draft> findDraftsByUserId(String userId) {
-        return draftRepo.findDraftsByUserId(userId);
+    public List<DeckDetails> findDeckDetailsListByDraftId(String draftId) {
+        return mtgRepo.findDeckDetailsListByDraftId(draftId);
     }
 
-    public List<DeckDetails> findDecksByDraftId(String draftId) {
-        return draftRepo.findDecksByDraftId(draftId);
+    public List<String> findAllSets() {
+        return cardRepo.findAllSets();
+    }
+
+    public Card findCardByCardId(String cardId) throws CardNotFoundException {
+        
+        Document doc = cardRepo.findCardByCardId(cardId);        
+
+        if (doc == null) 
+            throw new CardNotFoundException("Card is not found");
+
+        return Util.parseDocumentToCard(doc);
     }
 }

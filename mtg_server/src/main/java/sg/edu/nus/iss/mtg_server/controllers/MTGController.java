@@ -1,5 +1,6 @@
 package sg.edu.nus.iss.mtg_server.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,8 @@ import jakarta.json.Json;
 import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObjectBuilder;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
+import sg.edu.nus.iss.mtg_server.exceptions.CardNotFoundException;
 import sg.edu.nus.iss.mtg_server.exceptions.DeckNotFoundException;
 import sg.edu.nus.iss.mtg_server.exceptions.FailedToSaveDeckException;
 import sg.edu.nus.iss.mtg_server.exceptions.InvalidUsernameOrPasswordException;
@@ -23,24 +26,21 @@ import sg.edu.nus.iss.mtg_server.exceptions.UsernameAlreadyTakenException;
 import sg.edu.nus.iss.mtg_server.models.Card;
 import sg.edu.nus.iss.mtg_server.models.Deck;
 import sg.edu.nus.iss.mtg_server.models.DeckDetails;
-import sg.edu.nus.iss.mtg_server.models.Draft;
+import sg.edu.nus.iss.mtg_server.models.DraftDetails;
 import sg.edu.nus.iss.mtg_server.models.LoginDetails;
 import sg.edu.nus.iss.mtg_server.models.User;
 import sg.edu.nus.iss.mtg_server.services.CardPoolService;
+import sg.edu.nus.iss.mtg_server.services.MTGIOApiService;
 import sg.edu.nus.iss.mtg_server.services.MTGService;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping(path = "/api")
 public class MTGController {
 
-    private MTGService mtgSvc;
-
-    private CardPoolService cardPoolSvc;
-
-    public MTGController(MTGService mtgSvc, CardPoolService cardPoolSvc) {
-        this.mtgSvc = mtgSvc;
-        this.cardPoolSvc = cardPoolSvc;
-    }
+    private final MTGService mtgSvc;
+    private final CardPoolService cardPoolSvc;
+    private final MTGIOApiService mtgioApiSvc;
 
     /*
      * Endpoint for creation of new user, includes validation of User object.
@@ -178,23 +178,23 @@ public class MTGController {
      * Controller returns [...decks] upon successfully retrieving the list of 
      * decks or 404 if no decks are found.
      */
-    @GetMapping(path = "/decks/{userId}")
-    public ResponseEntity<String> getDecksByUserId(
-            @PathVariable String userId) {
+    // @GetMapping(path = "/decks/{userId}")
+    // public ResponseEntity<String> getDecksByUserId(
+    //         @PathVariable String userId) {
 
-        List<DeckDetails> deckDetailsList = mtgSvc.findDecksByUserId(userId);
+    //     List<DeckDetails> deckDetailsList = mtgSvc.findDecksByUserId(userId);
 
-        if (deckDetailsList.isEmpty())
-            return ResponseEntity.notFound().build();
+    //     if (deckDetailsList.isEmpty())
+    //         return ResponseEntity.notFound().build();
 
-        JsonArrayBuilder deckDetailsArrBuilder = Json.createArrayBuilder();
+    //     JsonArrayBuilder deckDetailsArrBuilder = Json.createArrayBuilder();
 
-        deckDetailsList.stream()
-                .map(deckDetails -> deckDetails.toJsonObjectBuilder())
-                .forEach(objBuilder -> deckDetailsArrBuilder.add(objBuilder));
+    //     deckDetailsList.stream()
+    //             .map(deckDetails -> deckDetails.toJsonObjectBuilder())
+    //             .forEach(objBuilder -> deckDetailsArrBuilder.add(objBuilder));
 
-        return ResponseEntity.ok(deckDetailsArrBuilder.build().toString());
-    }
+    //     return ResponseEntity.ok(deckDetailsArrBuilder.build().toString());
+    // }
 
     /*
      * Endpoint for retrieving a deck by deckId
@@ -217,33 +217,54 @@ public class MTGController {
     }
 
     /*
-     * Endpoint for getting list of drafts by userId
+     * Endpoint for getting list of draftDetailsList by userId
      */
-    @GetMapping(path = "/drafts/{userId}")
-    public ResponseEntity<String> getDraftsByUserId(
-            @PathVariable String userId) {
+    // @GetMapping(path = "/draftDetailsList/{userId}")
+    // public ResponseEntity<String> getDraftsByUserId(
+    //         @PathVariable String userId) {
         
-        List<Draft> drafts = mtgSvc.findDraftsByUserId(userId);
+    //     List<Draft> draftDetailsList = mtgSvc.findDraftsByUserId(userId);
 
-        if (drafts.isEmpty())
+    //     if (draftDetailsList.isEmpty())
+    //         return ResponseEntity.notFound().build();
+
+    //     JsonArrayBuilder draftArrBuilder = Json.createArrayBuilder();
+    //     draftDetailsList.stream()
+    //             .map(draft -> draft.toJsonObjectBuilder())
+    //             .forEach(objBuilder -> draftArrBuilder.add(objBuilder));
+
+    //     return ResponseEntity.ok(draftArrBuilder.build().toString());
+    // }
+
+    /*
+     * Endpoint for getting list of draftDetailsList
+     */
+    @GetMapping(path = "/draftDetailsList")
+    public ResponseEntity<String> getDraftsByUserId() {
+        
+        List<DraftDetails> draftDetailsList = mtgSvc.findAllDraftDetails();
+
+        if (draftDetailsList.isEmpty())
             return ResponseEntity.notFound().build();
 
         JsonArrayBuilder draftArrBuilder = Json.createArrayBuilder();
-        drafts.stream()
+        draftDetailsList.stream()
                 .map(draft -> draft.toJsonObjectBuilder())
                 .forEach(objBuilder -> draftArrBuilder.add(objBuilder));
 
         return ResponseEntity.ok(draftArrBuilder.build().toString());
     }
 
+
     /*
      * Endpoint for retrieving list of decks by draftId
      */
-    @GetMapping(path = "/draft/{draftId}")
+    @GetMapping(path = "/decks/{draftId}")
     public ResponseEntity<String> getDecksByDraftId(
             @PathVariable String draftId) {
 
-        List<DeckDetails> deckDetailsList = mtgSvc.findDecksByDraftId(draftId);
+        List<DeckDetails> deckDetailsList = 
+                mtgSvc.findDeckDetailsListByDraftId(draftId);
 
         if (deckDetailsList.isEmpty())
             return ResponseEntity.notFound().build();
@@ -262,10 +283,9 @@ public class MTGController {
      */
     @GetMapping(path = "/pool/{userId}")
     public ResponseEntity<String> getCardPoolByUserId(
-            @PathVariable String userId) {
+            @PathVariable String draftId) {
         
-        List<Card> cards = cardPoolSvc.findCardPoolByUserId(userId);
-        JsonObjectBuilder objBuilder = Json.createObjectBuilder();
+        List<Card> cards = cardPoolSvc.findCardPoolByDraftId(draftId);
 
         if (cards.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -276,10 +296,8 @@ public class MTGController {
                 .map(card -> card.toJsonObjectBuilder())
                 .forEach(jsonObj -> arrBuilder.add(jsonObj));
 
-        objBuilder.add("cards", arrBuilder);
-        return ResponseEntity.ok(objBuilder.build().toString());
+        return ResponseEntity.ok(arrBuilder.build().toString());
     }
-
 
     /*
      * Endpoint for saving drafted cards to database
@@ -301,5 +319,54 @@ public class MTGController {
         objBuilder.add("message", "Card pool cached successfully");
 
         return ResponseEntity.ok().body(objBuilder.build().toString());
+    }
+
+    /*
+     * Endpoint for retrieving list of sets available in database
+     */
+    @GetMapping(path = "/sets")
+    public ResponseEntity<String> getAllSets() {
+
+        List<String> sets = mtgSvc.findAllSets();
+
+        if (sets.isEmpty()) {
+            JsonObjectBuilder objBuilder = Json.createObjectBuilder()
+                    .add("message", "Unable to connect to database");
+
+            return ResponseEntity.internalServerError().body(
+                    objBuilder.build().toString());
+        }
+
+        JsonArrayBuilder arrBuilder = Json.createArrayBuilder();
+        sets.stream().forEach(v -> arrBuilder.add(v));
+
+        return ResponseEntity.ok(arrBuilder.build().toString());
+    }
+
+    /*
+     * Endpoint for generating a booster pack
+     */
+    @GetMapping(path = "/pack/{set}")
+    public ResponseEntity<String> getBoosterPack(@PathVariable String set) {
+
+        List<String> boosterPack = mtgioApiSvc.getBoosterPackFromAPI(set);
+        List<Card> cards = new ArrayList<>();
+
+        try {
+            for (String cardId : boosterPack) {
+                cards.add(mtgSvc.findCardByCardId(cardId));
+            }
+
+            JsonArrayBuilder arrBuilder = Json.createArrayBuilder();
+            cards.stream()
+                    .map(card -> card.toJsonObjectBuilder())
+                    .forEach(objBuilder -> arrBuilder.add(objBuilder));
+            
+            return ResponseEntity.ok(arrBuilder.build().toString());
+
+        } catch (CardNotFoundException ex) {
+            
+            return ResponseEntity.notFound().build();
+        }
     }
 }

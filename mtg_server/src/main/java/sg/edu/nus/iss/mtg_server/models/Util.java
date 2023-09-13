@@ -5,9 +5,9 @@ import org.bson.Document;
 import jakarta.json.Json;
 
 public class Util {
-    
+
     public static Document parseDeckToDocument(Deck deck) {
-        
+
         Document doc = new Document();
         doc.put("deck_id", deck.getDeckId());
         doc.put("deck_name", deck.getDeckName());
@@ -20,11 +20,22 @@ public class Util {
 
     public static Deck parseDocumentToDeck(Document document) {
         return new Deck(
-            document.getString("deck_id"), 
-            document.getString("deck_name"), 
-            document.getString("user_id"), 
-            document.getString("draft_id"), 
-            document.getList("cards", String.class));
+                document.getString("deck_id"),
+                document.getString("deck_name"),
+                document.getString("user_id"),
+                document.getString("draft_id"),
+                document.getList("cards", String.class));
     }
-    
+
+    public static Card parseDocumentToCard(Document document) {
+        return new Card(
+                document.getString("id"),
+                document.getString("name"),
+                document.getInteger("cmc"),
+                document.getString("type"),
+                document.getString("rarity"),
+                document.getString("set"),
+                document.getString("imageUrl")
+        );
+    }
 }

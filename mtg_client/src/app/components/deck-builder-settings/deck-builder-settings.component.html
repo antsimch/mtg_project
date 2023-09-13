@@ -1,0 +1,33 @@
+<div class="main-div" *ngIf="!randomCardPoolGenerated">
+    <form [formGroup]="settingsForm" (ngSubmit)="generateCardPool()">
+        <tr>
+            <mat-form-field>
+                <mat-label>Packs to Generate:</mat-label>
+                <input 
+                    matInput
+                    type="number" 
+                    step="1" 
+                    min="1" 
+                    max="5" 
+                    formControlName="numberOfBoosterPacks">
+            </mat-form-field>
+        </tr>
+        <tr>
+            <mat-form-field>
+                <mat-label>Set:</mat-label>
+                <mat-select formControlName="set">
+                    <mat-option 
+                        *ngFor="let set of setArr" 
+                        [value]="set"
+                        >{{ set }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </tr>
+        <tr>
+            <button 
+                mat-raised-button 
+                color="primary" 
+                type="submit">Start Building</button>
+        </tr>
+    </form>
+</div>

@@ -12,14 +12,12 @@ import lombok.NoArgsConstructor;
 public class DeckDetails {
     private String deckId;
     private String deckName;
-    private String userId;
     private String draftId;
 
     public JsonObjectBuilder toJsonObjectBuilder() {
         return Json.createObjectBuilder()
                 .add("deckId", this.deckId)
                 .add("deckName", this.deckName)
-                .add("userId", this.userId)
                 .add("draftId", this.draftId);
     }
 }

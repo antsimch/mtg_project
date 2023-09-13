@@ -21,13 +21,13 @@ public class CardPoolService {
         this.cardPoolRepo = cardPoolRepo;
     }
 
-    public List<Card> findCardPoolByUserId(String userId) {
-        Optional<String> opt = cardPoolRepo.findCardPoolByUserId(userId);
+    public List<Card> findCardPoolByDraftId(String draftId) {
+        Optional<String> opt = cardPoolRepo.findCardPoolByDraftId(draftId);
         
         if (opt.isEmpty())
             return new ArrayList<>();
 
-        JsonArray arr = Json.createReader(new StringReader(userId)).readArray();
+        JsonArray arr = Json.createReader(new StringReader(draftId)).readArray();
 
         List<Card> cards = new ArrayList<>();
 
@@ -38,10 +38,10 @@ public class CardPoolService {
         return cards;
     }
 
-    public boolean saveCardPool(List<Card> cardPool, String userId) {
-        cardPoolRepo.saveCardPool(cardPool, userId);
+    public boolean saveCardPool(List<Card> cardPool, String draftId) {
+        cardPoolRepo.saveCardPool(cardPool, draftId);
 
-        if (cardPoolRepo.findCardPoolByUserId(userId).isEmpty())
+        if (cardPoolRepo.findCardPoolByDraftId(draftId).isEmpty())
             return false;
         
         return true;

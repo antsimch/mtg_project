@@ -5,7 +5,6 @@ public class InvalidUsernameOrPasswordException extends Exception {
     private String message;
 
     public InvalidUsernameOrPasswordException(String message) {
-        super();
         this.message = message;
     }
 

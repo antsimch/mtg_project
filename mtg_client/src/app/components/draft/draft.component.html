@@ -1,0 +1,29 @@
+<h2>Rochester Draft</h2>
+
+<app-draft-settings 
+    (draftEvent)="startDraft($event)" 
+    [draftHasStarted]="draftHasStarted"
+    ></app-draft-settings>
+
+<span *ngIf="draftHasStarted">
+    <h2>My Turn: {{ myTurn }}</h2>
+    <span *ngIf="!myTurn">
+        <h3>
+            Please wait. Opening New Booster Pack
+        </h3>
+    </span>
+</span>
+
+<span *ngIf="draft && draft.status === 'COMPLETED'">
+    <h3>The draft has completed. Would you like to save your card pool?</h3>
+    <button type="button" (click)="saveCardPool()">Save</button>
+</span>
+
+<app-rochester 
+    [draft]="draft"
+    (draftedCardsEvent)="draftCard($event)"
+    ></app-rochester>
+
+<app-drafted-cards
+    [cardsDrafted]="cardsDrafted"
+    ></app-drafted-cards>

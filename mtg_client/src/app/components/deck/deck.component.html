@@ -1,9 +1,23 @@
-<h2>Deck</h2>
+<mat-accordion *ngIf="cardsInDeck.length > 0">
+    <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                Deck
+            </mat-panel-title>
+            <mat-panel-description>
+                Cards in Deck
+            </mat-panel-description>
+        </mat-expansion-panel-header>
 
-<div>
-    <tr *ngFor="let card of cardsInDeck; let i = index">
-        <button type="button" (click)="removeCardFromDeck(i)">
-            <img [src]="card.cardImageUrl">
-        </button>
-    </tr>
-</div>
+        <span *ngFor="let card of cardsInDeck; let i = index">
+            <a (click)="removeCardFromDeck(i)">
+                <img mat-card-image [src]="card.cardImageUrl" [alt]="card.cardName">
+            </a>
+        </span>
+
+
+        <!-- <mat-action-row>
+            <button mat-button color="primary" (click)="nextStep()">Next</button>
+        </mat-action-row> -->
+    </mat-expansion-panel>
+</mat-accordion>

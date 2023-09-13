@@ -5,7 +5,6 @@ public class UsernameAlreadyTakenException extends Exception {
     private String message;
 
     public UsernameAlreadyTakenException(String message) {
-        super();
         this.message = message;
     }
 

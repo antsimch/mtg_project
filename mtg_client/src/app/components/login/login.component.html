@@ -1,58 +1,59 @@
 <h2>Login</h2>
 
-<div>
+<div class="main-div">
     <form [formGroup]="loginForm" (ngSubmit)="login()">
-        <table>
-            <tr>
-                <td>Username:</td>
-                <td>
-                    <input 
+        <tr>
+            <mat-form-field>
+                <mat-label>Username:</mat-label>
+    
+                <input matInput
                         type="text" 
                         placeholder="Please enter your username" 
                         formControlName="username">
-
+    
                 <span 
                     *ngIf="loginForm.get('username')?.hasError('required') 
                             && loginForm.get('username')?.touched"
                     style="color:red"
                     >Please enter your name</span>
-
+    
                 <span 
                     *ngIf="error?.username" 
                     style="color:red"
                     >{{ error.username }}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>Password:</td>
-                <td>
-                    <input type="password"
-                        placeholder="Please enter your password"
-                        formControlName="password">
+            </mat-form-field>
+        </tr>
+        <tr>
+            <mat-form-field>
+                <mat-label>Password:</mat-label>
+                <input 
+                    matInput
+                    type="password"
+                    placeholder="Please enter your password"
+                    formControlName="password">
 
-                    <span 
-                        *ngIf="loginForm.get('password')?.hasError('required') 
-                                && loginForm.get('password')?.touched"
-                        style="color:red"
-                        >Please enter your name</span>
+                <span 
+                    *ngIf="loginForm.get('password')?.hasError('required') 
+                            && loginForm.get('password')?.touched"
+                    style="color:red"
+                    >Please enter your name</span>
 
-                    <span 
-                        *ngIf="error?.password" 
-                        style="color:red"
-                        >{{ error.password }}</span>
+                <span 
+                    *ngIf="error?.password" 
+                    style="color:red"
+                    >{{ error.password }}</span>
 
-                    <span 
-                        *ngIf="error?.message" 
-                        style="color:red"
-                        >{{ error.message }}</span>
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>
-                    <button type="submit">Login</button>
-                </td>
-            </tr>
-        </table>
+                <span 
+                    *ngIf="error?.message" 
+                    style="color:red"
+                    >{{ error.message }}</span>
+            </mat-form-field>
+        </tr>
+        <tr>
+            <button 
+                mat-raised-button 
+                color="primary" 
+                type="submit">Login</button>
+        </tr>
     </form>
 </div>

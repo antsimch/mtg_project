@@ -10,11 +10,16 @@ import { HomeComponent } from './components/home/home.component';
 import { DeckListComponent } from './components/deck-list/deck-list.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { RegisterComponent } from './components/register/register.component';
-import { HistoryComponent } from './components/history/history.component';
 import { RochesterComponent } from './components/rochester/rochester.component';
 import { DeckBuilderComponent } from './components/deck-builder/deck-builder.component';
 import { CardPoolComponent } from './components/card-pool/card-pool.component';
 import { DeckComponent } from './components/deck/deck.component';
+import { DraftedCardsComponent } from './components/drafted-cards/drafted-cards.component';
+import { DraftComponent } from './components/draft/draft.component';
+import { DraftSettingsComponent } from './components/draft-settings/draft-settings.component';
+import { DeckBuilderSettingsComponent } from './components/deck-builder-settings/deck-builder-settings.component';
+import { MaterialModule } from './material.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -25,17 +30,22 @@ import { DeckComponent } from './components/deck/deck.component';
     DeckListComponent,
     MenuComponent,
     RegisterComponent,
-    HistoryComponent,
     RochesterComponent,
     DeckBuilderComponent,
     CardPoolComponent,
-    DeckComponent
+    DeckComponent,
+    DraftedCardsComponent,
+    DraftComponent,
+    DraftSettingsComponent,
+    DeckBuilderSettingsComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    MaterialModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

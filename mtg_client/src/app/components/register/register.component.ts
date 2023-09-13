@@ -10,7 +10,7 @@ import { DeckService } from 'src/app/services/deck.service';
 })
 export class RegisterComponent implements OnInit {
 
-  registerForm!: FormGroup
+  registerForm!: FormGroup 
 
   constructor(
       private fb: FormBuilder,
@@ -40,10 +40,10 @@ export class RegisterComponent implements OnInit {
     this.registerForm = this.fb.group({
       username: this.fb.control<string>('', [Validators.required]),
       email: this.fb.control<string>('', [Validators.required]),
-      password: this.fb.control<string>('',
-        [Validators.required, this.validatePassword]),
+      password: this.fb.control<string>('', [Validators.required])
+        // [Validators.required, this.validatePassword]),
 
-      passwordConfirmation: this.fb.control<string>('', [Validators.required])
+      // passwordConfirmation: this.fb.control<string>('', [Validators.required])
     })
   }
 
