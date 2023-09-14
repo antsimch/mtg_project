@@ -1,24 +1,39 @@
 <h2>Deck List</h2>
 
-<table>
-    <thead>
-        <th>Deck Name:</th>
-        <th>Deck Colors:</th>
-        <th>Creation Date:</th>
-    </thead>
-    <tbody>
-        <tr *ngFor="let deckInfo of deckInfoList">
-            <td>
-                {{ deckInfo.name }}
-            </td>
-            <td>
-                <span *ngFor="let color of deckInfo.colors">
-                    <img [src]="color">
-                </span>
-            </td>
-            <td>
-                {{ deckInfo.creationDate }}
-            </td>
-        </tr>
-    </tbody>
-</table>
+<div class="main-div">
+    <table border="1">
+        <thead>
+            <th>No. :</th>
+            <th>Deck Id: </th>
+            <th>Deck Name:</th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let deckInfo of deckInfoList; let i = index">
+                <td>
+                    {{ i + 1 }}
+                </td>
+                <td>
+                    {{ deckInfo.id }}
+                </td>
+                <td>
+                    {{ deckInfo.name }}
+                </td>
+                <td>
+                    <button
+                        mat-raised-button
+                        type="button"
+                        color="primary"
+                        (click)="viewDeck(deckInfo.id)"
+                        >View</button>
+
+                    <button 
+                        mat-raised-button
+                        type="button"
+                        color="warn"
+                        (click)="deleteDeck(deckInfo.id)"
+                        >Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

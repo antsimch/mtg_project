@@ -58,17 +58,4 @@ export class DraftComponent implements OnInit {
 
     this.myTurn = false
   }
-
-  saveCardPool() {
-    const draftId = this.draft.draftId
-    this.deckSvc.saveCardPool(this.cardsDrafted, draftId)
-      .then(
-        result => {
-          console.log(result['message'])
-        }
-      )
-      .catch(
-        
-      )
-  }
 }

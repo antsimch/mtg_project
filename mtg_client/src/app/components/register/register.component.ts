@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DeckService } from 'src/app/services/deck.service';
 
@@ -21,8 +21,7 @@ export class RegisterComponent implements OnInit {
     this.deckSvc.registerUser(this.registerForm)
       .then(
         result => {
-          alert(result['message'])
-          this.router.navigate(['/login'])
+          this.router.navigate([''])
         }
       )
       .catch(
@@ -41,20 +40,6 @@ export class RegisterComponent implements OnInit {
       username: this.fb.control<string>('', [Validators.required]),
       email: this.fb.control<string>('', [Validators.required]),
       password: this.fb.control<string>('', [Validators.required])
-        // [Validators.required, this.validatePassword]),
-
-      // passwordConfirmation: this.fb.control<string>('', [Validators.required])
     })
-  }
-
-  validatePassword(control: AbstractControl) {
-    const firstPasswordEntry: string = control.value
-
-    if (firstPasswordEntry ===
-      this.registerForm.get('passwordConfirmation')?.value)
-
-      return null
-
-    return { 'passwordEntryDifferent': true } as ValidationErrors
   }
 }

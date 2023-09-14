@@ -2,7 +2,8 @@
 
 <app-deck-builder-settings 
     [randomCardPoolGenerated]="randomCardPoolGenerated"
-    (formEvent)="generateCardPool($event)"></app-deck-builder-settings>
+    (formEvent)="generateCardPool($event)"
+    (saveEvent)="saveDeck($event)"></app-deck-builder-settings>
 
 <app-card-pool 
     [cardsInPool]="cardsInPool" 

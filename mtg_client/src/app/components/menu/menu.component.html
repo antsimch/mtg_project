@@ -1,5 +1,30 @@
 <h2>Menu</h2>
 
-<button type="button" [routerLink]="['/rochester', userId]">Rochester Draft</button>
-<button type="button" [routerLink]="['/decks', userId]">Decks</button>
-<button type="button" [routerLink]="['/history', userId]">Draft History</button>
+<div class="main-div">
+    <table>
+        <tr>
+            <button 
+                type="button" 
+                class="menu-select"
+                mat-flat-button 
+                [routerLink]="['/decks']"
+                >Decks</button>
+        </tr>
+        <tr>
+            <button 
+                type="button" 
+                class="menu-select"
+                mat-flat-button 
+                [routerLink]="['/playdraft']"
+                >Rochester Draft</button>
+        </tr>
+        <tr>
+            <button 
+                type="button" 
+                class="menu-select"
+                mat-flat-button 
+                [routerLink]="['/deckbuilder']"
+                >Deck Builder</button>
+        </tr>    
+    </table>
+</div>

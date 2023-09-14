@@ -29,7 +29,8 @@ public class DraftController {
             @PathVariable String set) throws CardNotFoundException {
 
         Draft draft = draftSvc.createDraft(player, set);
-
+        
+        System.out.println("\n\n" + draft + "\n\n");
         return ResponseEntity.ok(
                 draft.toJsonObjectBuilder().build().toString());
     }

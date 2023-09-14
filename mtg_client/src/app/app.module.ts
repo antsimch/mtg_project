@@ -1,12 +1,11 @@
-import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { NgModule, isDevMode } from '@angular/core';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
-import { HomeComponent } from './components/home/home.component';
 import { DeckListComponent } from './components/deck-list/deck-list.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { RegisterComponent } from './components/register/register.component';
@@ -20,13 +19,15 @@ import { DraftSettingsComponent } from './components/draft-settings/draft-settin
 import { DeckBuilderSettingsComponent } from './components/deck-builder-settings/deck-builder-settings.component';
 import { MaterialModule } from './material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BasicAuthHttpInterceptorService } from './services/basic-auth-http-interceptor.service';
+import { ViewDeckComponent } from './components/view-deck/view-deck.component';
+import { LogoutComponent } from './components/logout/logout.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    HomeComponent,
     DeckListComponent,
     MenuComponent,
     RegisterComponent,
@@ -37,7 +38,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     DraftedCardsComponent,
     DraftComponent,
     DraftSettingsComponent,
-    DeckBuilderSettingsComponent
+    DeckBuilderSettingsComponent,
+    ViewDeckComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,
@@ -47,7 +50,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MaterialModule,
     BrowserAnimationsModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide:HTTP_INTERCEPTORS, useClass:BasicAuthHttpInterceptorService, multi:true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

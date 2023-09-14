@@ -1,18 +1,12 @@
-<div class="main-div" *ngIf="!randomCardPoolGenerated">
-    <form [formGroup]="settingsForm" (ngSubmit)="generateCardPool()">
-        <tr>
+<div class="main-div">
+    <form [formGroup]="settingsForm" (ngSubmit)="addCards()">
             <mat-form-field>
-                <mat-label>Packs to Generate:</mat-label>
+                <mat-label>Deck Name:</mat-label>
                 <input 
                     matInput
-                    type="number" 
-                    step="1" 
-                    min="1" 
-                    max="5" 
-                    formControlName="numberOfBoosterPacks">
+                    type="text" 
+                    formControlName="deckName">
             </mat-form-field>
-        </tr>
-        <tr>
             <mat-form-field>
                 <mat-label>Set:</mat-label>
                 <mat-select formControlName="set">
@@ -22,12 +16,15 @@
                         >{{ set }}</mat-option>
                 </mat-select>
             </mat-form-field>
-        </tr>
-        <tr>
+
             <button 
                 mat-raised-button 
                 color="primary" 
-                type="submit">Start Building</button>
-        </tr>
+                type="submit">Add Cards</button>
+                
+            <button 
+                mat-raised-button 
+                color="warn" 
+                type="button" (click)="saveDeck()">Save Deck</button>
     </form>
 </div>

@@ -1,7 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { Card, Draft } from 'src/app/models';
-import { DeckService } from 'src/app/services/deck.service';
 
 @Component({
   selector: 'app-rochester',
@@ -13,9 +11,7 @@ export class RochesterComponent {
   @Input() draft!: Draft
   @Output() draftedCardsEvent = new EventEmitter<Card>()
   
-  constructor(
-    private deckSvc: DeckService,
-    private activatedRoute: ActivatedRoute) {}
+  constructor() {}
 
   step = 0;
 

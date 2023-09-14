@@ -1,10 +1,10 @@
 package sg.edu.nus.iss.mtg_server.exceptions;
 
-public class InvalidUsernameOrPasswordException extends Exception {
+public class InvalidPasswordException extends Exception {
     
     private String message;
 
-    public InvalidUsernameOrPasswordException(String message) {
+    public InvalidPasswordException(String message) {
         this.message = message;
     }
 

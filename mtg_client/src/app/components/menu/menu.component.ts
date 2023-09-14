@@ -6,13 +6,9 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.css']
 })
-export class MenuComponent implements OnInit {
+export class MenuComponent {
 
   userId!: string
 
   constructor(private activatedRoute: ActivatedRoute) {}
-
-  ngOnInit(): void {
-    this.userId = this.activatedRoute.snapshot.params['userId']
-  }
 }

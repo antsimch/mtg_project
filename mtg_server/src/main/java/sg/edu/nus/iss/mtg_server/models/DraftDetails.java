@@ -12,16 +12,12 @@ import lombok.NoArgsConstructor;
 public class DraftDetails {
     private String draftId;
     private String draftSet;
-    private String draftDate;
-    private Integer numberOfPlayers;
-    private Integer decksCreated;
+    private String userId;
 
     public JsonObjectBuilder toJsonObjectBuilder() {
         return Json.createObjectBuilder()
                 .add("draftId", this.draftId)
                 .add("draftSet", this.draftSet)
-                .add("draftDate", this.draftDate)
-                .add("numberOfPlayers", this.numberOfPlayers)
-                .add("decksCreated", this.decksCreated);
+                .add("userId", this.userId);
     }
 }

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { DeckService } from 'src/app/services/deck.service';
+import { LoginDetails } from 'src/app/models';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +16,7 @@ export class LoginComponent implements OnInit {
 
   constructor(
       private fb: FormBuilder,
-      private deckSvc: DeckService,
+      private authSvc: AuthService,
       private router: Router) { }
 
   ngOnInit(): void {
@@ -30,16 +31,19 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    this.deckSvc.login(this.loginForm)
+    const login: LoginDetails = {
+      username: this.loginForm.get('username')?.value,
+      password: this.loginForm.get('password')?.value
+    }
+    this.authSvc.authenticate(login)
       .then(
         result => {
-          const userId = result['userId']
-          this.router.navigate(['/', userId])
+          this.router.navigate(['/home'])
         }
       )
       .catch(
         error => {
-          this.error = error
+          alert(error['message'])
         }
       )
   }

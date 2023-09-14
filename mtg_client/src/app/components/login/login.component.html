@@ -52,8 +52,16 @@
         <tr>
             <button 
                 mat-raised-button 
+                class="login-button"
                 color="primary" 
                 type="submit">Login</button>
+
+            <button 
+                mat-raised-button 
+                class="new-account-button"
+                color="warn" 
+                type="button" 
+                [routerLink]="['register']">New Account</button>
         </tr>
     </form>
 </div>

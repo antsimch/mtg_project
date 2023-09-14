@@ -36,14 +36,13 @@ export class DraftSettingsComponent {
       )
       .catch(
         error => {
-
+          alert(error['message'])
         }
       )
   }
 
   createForm() {
     this.settingsForm = this.fb.group({
-      playerName: this.fb.control<string>('', [ Validators.required ]),
       set: this.fb.control<string>('', [ Validators.required ])
     })
   }
@@ -59,7 +58,7 @@ export class DraftSettingsComponent {
       )
       .catch(
         error => {
-
+          console.log(error['message'])
         }
       )
   }

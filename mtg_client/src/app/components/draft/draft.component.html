@@ -5,18 +5,14 @@
     [draftHasStarted]="draftHasStarted"
     ></app-draft-settings>
 
-<span *ngIf="draftHasStarted">
-    <h2>My Turn: {{ myTurn }}</h2>
-    <span *ngIf="!myTurn">
-        <h3>
-            Please wait. Opening New Booster Pack
-        </h3>
-    </span>
-</span>
+<div class="main-div" *ngIf="draftHasStarted">
+    <button mat-flat-button color="primary">
+        {{ myTurn ? 'Player Turn' : 'CPU Turn' }}
+    </button>
+</div>
 
 <span *ngIf="draft && draft.status === 'COMPLETED'">
-    <h3>The draft has completed. Would you like to save your card pool?</h3>
-    <button type="button" (click)="saveCardPool()">Save</button>
+    <h3>The draft has completed.</h3>
 </span>
 
 <app-rochester 

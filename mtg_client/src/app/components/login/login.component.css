@@ -2,7 +2,15 @@ h2 {
     text-align: center;
 }
 
-.main-div{
+.main-div {
     display: flex;
     justify-content: center;
+}
+
+.login-button {
+    justify-self: left;
+}
+
+.new-account-button {
+    justify-content: right;
 }

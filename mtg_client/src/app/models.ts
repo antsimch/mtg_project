@@ -1,17 +1,26 @@
+export interface User {
+    userId: string
+    username: string
+    userEmail: string
+    userPassword: string
+}
+
+export interface LoginDetails {
+    username: string
+    password: string
+}
+
 export interface Deck {
     deckId: string
     deckName: string
     userId: string
-    draftId: string
     cards: string[]
 }
 
 export interface DraftDetails {
     draftId: string
     draftSet: string
-    draftDate: string
-    numberOfPlayers: number
-    decksCreated: number
+    userId: string
 }
 
 export interface Card {

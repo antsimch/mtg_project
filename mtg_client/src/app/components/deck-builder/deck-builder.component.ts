@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { Card } from 'src/app/models';
 import { DeckService } from 'src/app/services/deck.service';
 
@@ -9,7 +9,7 @@ import { DeckService } from 'src/app/services/deck.service';
   templateUrl: './deck-builder.component.html',
   styleUrls: ['./deck-builder.component.css']
 })
-export class DeckBuilderComponent implements OnInit {
+export class DeckBuilderComponent {
 
   randomCardPoolGenerated = false
   cardsInPool: Card[] = []
@@ -17,24 +17,23 @@ export class DeckBuilderComponent implements OnInit {
 
   constructor(
     private deckSvc: DeckService,
-    private activatedRoute: ActivatedRoute) { }
+    private router: Router) { }
 
   generateCardPool(form: FormGroup) {
-    const numberOfBoosterPacks = form.get('numberOfBoosterPacks')?.value
     const set = form.get('set')?.value
-    for (let i = 0; i < numberOfBoosterPacks; i++) {
-      this.deckSvc.getBoosterPack(set)
-        .then(
-          result => {
-            console.log(result)
-            const oldArr = this.cardsInPool
-            this.cardsInPool = oldArr.concat(result)
-            if (this.cardsInPool.length > 0)
-              this.randomCardPoolGenerated = true
-          }
-        )
-        .catch()
-    }
+    this.deckSvc.getBoosterPack(set)
+      .then(
+        result => {
+          console.log(result)
+          const oldArr = this.cardsInPool
+          this.cardsInPool = oldArr.concat(result)
+        }
+      )
+      .catch(
+        error => {
+          console.log(error['message'])
+        }
+      )
   }
 
   addCardToDeck(card: Card) {
@@ -53,35 +52,29 @@ export class DeckBuilderComponent implements OnInit {
     this.cardsInDeck.splice(index, 1)
   }
 
-  saveDeck() {
+  saveDeck(form: FormGroup) {
     let cardList: string[] = []
     this.cardsInDeck.forEach(card => {
       cardList.push(card.cardId)
     })
+
     const deck = {
       deckId: '',
-      deckName: "sample deck",
-      userId: 'sample id',
-      draftId: 'sample id',
+      deckName: form.get('deckName')?.value,
+      userId: sessionStorage.getItem('userId') + '',
       cards: cardList
     }
     this.deckSvc.saveDeck(deck)
-      .then()
-      .catch()
-  }
-
-  ngOnInit(): void {
-    // const userId = this.activatedRoute.snapshot.params['userId']
-    // this.deckSvc.getCardPool(userId)
-    //   .then(
-    //     result => {
-    //       this.cardsInPool = result
-    //     }
-    //   )
-    //   .catch(
-    //     error => {
-
-    //     }
-    //   )
+      .then(
+        result => {
+          alert(result['message'])
+          this.router.navigate(['/home'])
+        }
+      )
+      .catch(
+        error => {
+          console.log(error['message'])
+        }
+      )
   }
 }

@@ -30,4 +30,5 @@ public class User {
     @NotEmpty
     @NotBlank
     private String userPassword;
+    
 }

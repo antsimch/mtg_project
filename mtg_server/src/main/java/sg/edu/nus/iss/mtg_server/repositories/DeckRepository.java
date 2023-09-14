@@ -24,10 +24,16 @@ public class DeckRepository {
     }
 
     public Document findDeckByDeckId(String deckId) {
-        Query query = Query.query(Criteria.where("deck_id").is(deckId));
+        Query query = Query.query(Criteria.where("deckId").is(deckId));
         List<Document> docs = template.find(
                 query, Document.class, C_NAME);
 
         return docs.isEmpty()? null: docs.get(0);
+    }
+
+    public Document deleteDeckByDeckId(String deckId) {
+        Query query = Query.query(Criteria.where("deckId").is(deckId));
+        Document deleted = template.findAndRemove(query, Document.class, C_NAME);
+        return deleted;
     }
 }

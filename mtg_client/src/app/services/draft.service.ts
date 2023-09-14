@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { firstValueFrom } from 'rxjs';
-import * as uuid from 'uuid';
 import { CardPick, Draft } from '../models';
 
 @Injectable({
@@ -14,8 +13,8 @@ export class DraftService {
 
   createDraftSession(form: FormGroup) {
     const payload = {
-      playerName: form.get('playerName')?.value,
-      playerId: uuid.v4().substring(0, 8)
+      playerName: sessionStorage.getItem('username'),
+      playerId: sessionStorage.getItem('userId')
     }
 
     const set = form.get('set')?.value

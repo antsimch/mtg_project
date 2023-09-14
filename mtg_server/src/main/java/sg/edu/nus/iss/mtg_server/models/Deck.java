@@ -28,23 +28,17 @@ public class Deck {
     @NotBlank
     private String userId;
 
-    @NotNull
-    @NotEmpty
-    @NotBlank
-    private String draftId;
-
-    @NotNull
-    @NotEmpty
-    @NotBlank
     private List<String> cards;
 
     public JsonObjectBuilder toJsonObjectBuilder() {
+        System.out.println("deckId " + this.deckId);
+        System.out.println("deckName " + this.deckName);
+        System.out.println("userId " + this.userId);
+        System.out.println("cards " + this.cards);
         return Json.createObjectBuilder()
                 .add("deckId", this.deckId)
                 .add("deckName", this.deckName)
                 .add("userId", this.userId)
-                .add("draftId", this.draftId)
-                .add("cards", 
-                        Json.createArrayBuilder(this.cards));
+                .add("cards", Json.createArrayBuilder(this.cards));
     }
 }

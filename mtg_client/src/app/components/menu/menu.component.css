@@ -1,3 +1,13 @@
 h2 {
     text-align: center;
 }
+
+.main-div {
+    display: flex;
+    justify-content: center;
+}
+
+.menu-select {
+    width: 500px;
+    min-width: unset;
+}

@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { firstValueFrom } from 'rxjs';
-import { Card, Deck, Draft } from '../models';
+import { Card, Deck, Draft, User } from '../models';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,8 @@ export class DeckService {
   constructor(private http: HttpClient) { }
 
   registerUser(form: FormGroup) {
-    const payload = {
+    const payload: User = {
+      userId: '',
       username: form.get('username')?.value,
       userEmail: form.get('email')?.value,
       userPassword: form.get('password')?.value
@@ -20,21 +21,12 @@ export class DeckService {
     return firstValueFrom(this.http.post<any>('/api/register', payload))
   }
 
-  login(form: FormGroup) {
-    const payload = {
-      username: form.get('username')?.value,
-      password: form.get('password')?.value
-    }
-    return firstValueFrom(this.http.post<any>('/api/login', payload))
-  }
-
   saveDeck(deck: Deck) {
     const payload = {
       deckId: '',
       deckName: deck.deckName,
       userId: deck.userId,
-      draftId: deck.draftId,
-      cards: JSON.stringify(deck.cards)
+      cards: deck.cards
     }
     return firstValueFrom(this.http.post<any>('/api/save', payload))
   }
@@ -44,7 +36,11 @@ export class DeckService {
   }
 
   getDeckByDeckId(deckId: string) {
-    return firstValueFrom(this.http.get<any>(`/api/deck/${deckId}`))
+    return firstValueFrom(this.http.get<Deck>(`/api/deck/${deckId}`))
+  }
+
+  deleteDeckByDeckId(deckId: string) {
+    return firstValueFrom(this.http.delete<any>(`/api/deck/${deckId}`))
   }
 
   getDraftsByUserId(userId: string) {
@@ -70,5 +66,9 @@ export class DeckService {
 
   getBoosterPack(set: string) {
     return firstValueFrom(this.http.get<Card[]>(`/api/pack/${set}`))
+  }
+
+  getCard(cardId: string) {
+    return firstValueFrom(this.http.get<Card>(`/api/card/${cardId}`))
   }
 }
