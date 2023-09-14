@@ -87,16 +87,4 @@ public class MTGService {
 
         return Util.parseDocumentToCard(doc);
     }
-
-    // public List<DraftDetails> findDraftDetailsListByUserId(String userId) {
-    //     return mtgRepo.findDraftDetailsListByUserId(userId);
-    // }
-
-    // public List<DraftDetails> findAllDraftDetails() {
-    //     return mtgRepo.findAllDraftDetails();
-    // }
-
-    // public List<DeckDetails> findDeckDetailsListByDraftId(String draftId) {
-    //     return mtgRepo.findDeckDetailsListByDraftId(draftId);
-    // }
 }

@@ -36,8 +36,6 @@ public class MTGController {
     private final MTGService mtgSvc;
     private final MTGIOApiService mtgioApiSvc;
 
-    // private final CardPoolService cardPoolSvc;
-
     /*
      * Endpoint for saving a deck, includes validation of Deck object.
      * Controller returns {"message": "Your deck {deckName}(id: {deckId}) has 
@@ -218,109 +216,4 @@ public class MTGController {
             return ResponseEntity.notFound().build();
         }
     }
-
-    /*
-     * Endpoint for getting list of draftDetailsList by userId
-     */
-    // @GetMapping(path = "/draftDetailsList/{userId}")
-    // public ResponseEntity<String> getDraftsByUserId(
-    //         @PathVariable String userId) {
-        
-    //     List<Draft> draftDetailsList = mtgSvc.findDraftsByUserId(userId);
-
-    //     if (draftDetailsList.isEmpty())
-    //         return ResponseEntity.notFound().build();
-
-    //     JsonArrayBuilder draftArrBuilder = Json.createArrayBuilder();
-    //     draftDetailsList.stream()
-    //             .map(draft -> draft.toJsonObjectBuilder())
-    //             .forEach(objBuilder -> draftArrBuilder.add(objBuilder));
-
-    //     return ResponseEntity.ok(draftArrBuilder.build().toString());
-    // }
-
-    /*
-     * Endpoint for getting list of draftDetailsList
-     */
-    // @GetMapping(path = "/draftDetailsList")
-    // public ResponseEntity<String> getDraftsByUserId() {
-        
-    //     List<DraftDetails> draftDetailsList = mtgSvc.findAllDraftDetails();
-
-    //     if (draftDetailsList.isEmpty())
-    //         return ResponseEntity.notFound().build();
-
-    //     JsonArrayBuilder draftArrBuilder = Json.createArrayBuilder();
-    //     draftDetailsList.stream()
-    //             .map(draft -> draft.toJsonObjectBuilder())
-    //             .forEach(objBuilder -> draftArrBuilder.add(objBuilder));
-
-    //     return ResponseEntity.ok(draftArrBuilder.build().toString());
-    // }
-
-
-    /*
-     * Endpoint for retrieving list of decks by draftId
-     */
-    // @GetMapping(path = "/decks/{draftId}")
-    // public ResponseEntity<String> getDecksByDraftId(
-    //         @PathVariable String draftId) {
-
-    //     List<DeckDetails> deckDetailsList = 
-    //             mtgSvc.findDeckDetailsListByDraftId(draftId);
-
-    //     if (deckDetailsList.isEmpty())
-    //         return ResponseEntity.notFound().build();
-
-    //     JsonArrayBuilder deckDetailsArrBuilder = Json.createArrayBuilder();
-
-    //     deckDetailsList.stream()
-    //             .map(deckDetails -> deckDetails.toJsonObjectBuilder())
-    //             .forEach(objBuilder -> deckDetailsArrBuilder.add(objBuilder));
-
-    //     return ResponseEntity.ok(deckDetailsArrBuilder.build().toString());
-    // }
-
-    /*
-     * Endpoint for retrieving drafted cards from database
-     */
-    // @GetMapping(path = "/pool/{userId}")
-    // public ResponseEntity<String> getCardPoolByUserId(
-    //         @PathVariable String draftId) {
-        
-    //     List<Card> cards = cardPoolSvc.findCardPoolByDraftId(draftId);
-
-    //     if (cards.isEmpty()) {
-    //         return ResponseEntity.notFound().build();
-    //     }
-
-    //     JsonArrayBuilder arrBuilder = Json.createArrayBuilder();
-    //     cards.stream()
-    //             .map(card -> card.toJsonObjectBuilder())
-    //             .forEach(jsonObj -> arrBuilder.add(jsonObj));
-
-    //     return ResponseEntity.ok(arrBuilder.build().toString());
-    // }
-
-    /*
-     * Endpoint for saving drafted cards to database
-     */
-    // @PostMapping(path = "/pool/{userId}")
-    // public ResponseEntity<String> saveCardPool(
-    //         @RequestBody List<Card> cards, 
-    //         @PathVariable String userId) {
-
-    //     boolean insertSuccessful = cardPoolSvc.saveCardPool(cards, userId);
-    //     JsonObjectBuilder objBuilder = Json.createObjectBuilder();
-
-    //     if (!insertSuccessful){
-    //         objBuilder.add("message", "Error with caching card pool");
-    //         return ResponseEntity.internalServerError().body(
-    //             objBuilder.build().toString());
-    //     }
-
-    //     objBuilder.add("message", "Card pool cached successfully");
-
-    //     return ResponseEntity.ok().body(objBuilder.build().toString());
-    // }
 }

@@ -43,37 +43,4 @@ public class Draft {
                 .add("set", this.set)
                 .add("cards", cardsArrBuilder);
     }
-
-    // public static Draft fromJson(String jsonString) {
-
-    //     JsonObject obj = Json.createReader(new StringReader(jsonString))
-    //             .readObject();
-
-    //     JsonArray playerArr = obj.getJsonArray("players");
-    //     List<Player> players = new ArrayList<>();
-    //     playerArr.stream()
-    //             .map(value -> value.asJsonObject().toString())
-    //             .map(jsonStr -> Player.fromJson(jsonStr))
-    //             .forEach(player -> players.add(player));
-
-    //     JsonArray cardArr = obj.getJsonArray("cards");
-    //     List<Card> cards = new ArrayList<>();
-    //     cardArr.stream()
-    //             .map(value -> value.asJsonObject().toString())
-    //             .map(jsonStr -> Card.fromJson(jsonStr))
-    //             .forEach(card -> cards.add(card));
-
-    //     System.out.println("\n\n" + players.toString() + "\n\n");
-    //     System.out.println("\n\n" + cards.toString() + "\n\n");
-
-    //     return new Draft(
-    //         obj.getString("draftId"),
-    //         players,
-    //         DraftStatus.valueOf(obj.getString("status")),
-    //         obj.getString("set"),
-    //         cards,
-    //         obj.getJsonNumber("numberOfBoosterPacks").intValue(),
-    //         obj.getString("playerTurn")
-    //     );
-    // }
 }

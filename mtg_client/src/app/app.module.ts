@@ -22,6 +22,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BasicAuthHttpInterceptorService } from './services/basic-auth-http-interceptor.service';
 import { ViewDeckComponent } from './components/view-deck/view-deck.component';
 import { LogoutComponent } from './components/logout/logout.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 
 @NgModule({
@@ -48,7 +49,13 @@ import { LogoutComponent } from './components/logout/logout.component';
     ReactiveFormsModule,
     HttpClientModule,
     MaterialModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    })
   ],
   providers: [
     {

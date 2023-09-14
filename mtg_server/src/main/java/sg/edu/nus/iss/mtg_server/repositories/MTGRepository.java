@@ -35,23 +35,6 @@ public class MTGRepository {
             where deck_id = ?;
             """;
 
-//     private static final String SQL_FIND_DRAFT_DETAILS_LIST_BY_USER_ID = """
-//             select *
-//             from draft_details
-//             where user_id = ?;
-//             """;
-
-//     private static final String SQL_FIND_ALL_DRAFT_DETAILS = """
-//             select *
-//             from draft_details
-//             """;
-
-//     private static final String SQL_FIND_DRAFT_DETAILS_BY_DRAFT_ID = """
-//             select *
-//             from draft_details
-//             where draft_id = ?;
-//             """;
-
     private final JdbcTemplate template;
 
     public boolean insertDraftDetails(DraftDetails draftDetails) {
@@ -82,29 +65,4 @@ public class MTGRepository {
                 SQL_DELETE_DECK_DETAILS,
                 deckId) > 0;
     }
-
-//     public List<DraftDetails> findDraftDetailsListByUserId(String userId) {
-//         return template.query(
-//                 SQL_FIND_DRAFT_DETAILS_LIST_BY_USER_ID,
-//                 BeanPropertyRowMapper.newInstance(DraftDetails.class),
-//                 userId);
-//     }
-
-//     public List<DraftDetails> findAllDraftDetails() {
-//         return template.query(
-//                 SQL_FIND_ALL_DRAFT_DETAILS,
-//                 BeanPropertyRowMapper.newInstance(DraftDetails.class));
-//     }
-
-//     public DraftDetails findDraftDetailsByDraftId(String draftId) {
-//         List<DraftDetails> draftDetailsList = template.query(
-//                 SQL_FIND_DRAFT_DETAILS_BY_DRAFT_ID,
-//                 BeanPropertyRowMapper.newInstance(DraftDetails.class),
-//                 draftId);
-
-//         if (draftDetailsList.isEmpty())
-//             return null;
-
-//         return draftDetailsList.get(0);
-//     }
 }
