@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class Card {
     private String cardId;
     private String cardName;
-    private Integer cardCMC;
+    private Double cardCMC;
     private String cardType;
     private String cardRarity;
     private String cardSet;
@@ -38,7 +38,7 @@ public class Card {
         return new Card(
                 obj.getString("cardId"),
                 obj.getString("cardName"),
-                obj.getJsonNumber("cardCMC").intValue(),
+                obj.getJsonNumber("cardCMC").doubleValue(),
                 obj.getString("cardType"),
                 obj.getString("cardRarity"),
                 obj.getString("cardSet"),

@@ -13,10 +13,11 @@ public class Util {
     }
 
     public static Card parseDocumentToCard(Document document) {
+        System.out.println("\n\n" + document + "\n\n");
         return new Card(
                 document.getString("id"),
                 document.getString("name"),
-                document.getInteger("cmc"),
+                document.getDouble("cmc"),
                 document.getString("type"),
                 document.getString("rarity"),
                 document.getString("set"),
